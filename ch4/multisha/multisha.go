@@ -13,10 +13,10 @@ func main() {
 	flag.Parse()
 
 	for _, arg := range flag.Args() {
-		switch {
-		case *t == 384:
+		switch *t {
+		case 384:
 			fmt.Printf("%x\n", sha512.Sum384([]byte(arg)))
-		case *t == 512:
+		case 512:
 			fmt.Printf("%x\n", sha512.Sum512([]byte(arg)))
 		default:
 			fmt.Printf("%x\n", sha256.Sum256([]byte(arg)))
