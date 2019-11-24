@@ -60,7 +60,7 @@ func setDiff(a []string, b []string) (res []string) {
 		has := false
 	inner:
 		for _, bOne := range b {
-			if aOne == bOne {
+			if aOne == bOne || strings.Contains(aOne, bOne) || strings.Contains(bOne, aOne) {
 				has = true
 				break inner
 			}
@@ -74,11 +74,11 @@ func setDiff(a []string, b []string) (res []string) {
 }
 
 func main() {
-	md, cvs := "/Users/youxin/Downloads/建设方案.md", "/Users/youxin/Downloads/软件明细.csv"
+	md, cvs := "/Users/youxin/Dev/shengyue/建设方案.md", "/Users/youxin/Dev/shengyue/软件明细.csv"
 	otherSet, ownSet := parseMd(md), parseCSV(cvs)
 	fmt.Fprintln(os.Stdout, "<h1>建设方案中有，而软件明细中没有的如下：</h1>")
 	for _, other := range setDiff(otherSet, ownSet) {
-		fmt.Fprintf(os.Stdout, "<code style=\"color: blue;\">%s</code><br/>", other)
+		fmt.Fprintf(os.Stdout, "<code style=\"color: white;\">%s</code><br/>", other)
 	}
 	fmt.Fprintln(os.Stdout, "<h1>软件明细中有，而建设方案中没有的如下：</h1>")
 	for _, own := range setDiff(ownSet, otherSet) {
