@@ -167,3 +167,30 @@ func download(engine *gin.Engine) {
 		c.DataFromReader(http.StatusOK, contentLength, contentType, reader, extraHeaders)
 	})
 }
+
+func checkCookie(key string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		act, err := c.Cookie("act")
+		if err != nil || act != key {
+			c.String(http.StatusUnauthorized, "unauthorized")
+			c.Abort()
+			return
+		}
+
+		c.Next()
+	}
+}
+
+func auth(engine *gin.Engine) {
+	doc := engine.Group("/doc")
+	doc.Use(checkCookie("doc"))
+	doc.GET("/ping", func(c *gin.Context) {
+		c.String(http.StatusOK, "doctors ping OK!")
+	})
+
+	fac := engine.Group("/fac")
+	fac.Use(checkCookie("fac"))
+	fac.GET("/ping", func(c *gin.Context) {
+		c.String(http.StatusOK, "factory ping OK!")
+	})
+}

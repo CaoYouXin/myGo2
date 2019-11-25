@@ -18,6 +18,7 @@ func InitRouter(engine *gin.Engine) http.Handler {
 	formpost(engine)
 	upload(engine)
 	download(engine)
+	auth(engine)
 
 	return engine
 }
